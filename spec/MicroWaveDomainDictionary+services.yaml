@@ -58,75 +58,41 @@ servers:
           uuid: mwdd-1-0-0-op-s-bs-005
           operation-key: n.a.
       individual:
+        - operation-name: /v1/provide-ltp-identifiers-for-link-id
+          uuid: mwdd-1-0-0-op-s-im-000
+        - operation-name: /v1/provide-ltp-identifiers-for-link-endpoint
+          uuid: mwdd-1-0-0-op-s-im-001
+        - operation-name: /v1/provide-equipment-interface-identifiers-for-access-port
+          uuid: mwdd-1-0-0-op-s-im-002
   http-server:
-    own-application-name:
-    own-release-number:
+    own-application-name: MicroWaveDomainDictionary
+    own-release-number: 1.0.0
     uuid: mwdd-1-0-0-http-s-000
-    application-purpose:
-    owner-name:
-    owner-email-address:
+    application-purpose: Translates out-of-domain IDs (like e.g. NE-ID, LinkID) into mw-domain IDs (like e.g. MountName, UUID and LocalID) that are required for addressing resources.
+    owner-name: Ana Cabello Barrera
+    owner-email-address: ana.cabello-barrera@telefonica.com
     release-list:
       - release-number: 1.0.0
-        release-date: 02.01.2025
-        changes: Initial version
+        release-date: 04.10.2025
+        changes: Prototype
   tcp-server:
     - description: Without TLS layer
       local-protocol: http
       own-ip-address: 127.0.0.1
-      own-tcp-port:
+      own-tcp-port: 4030
       uuid: mwdd-1-0-0-tcp-s-000
 
 
 clients:
 
   - http-client:
-      application-name: ElasticSearch
-      release-number: 1.0.0
-      uuid: mwdd-1-0-0-http-c-es-1-0-0-000
-    tcp-client:
-      remote-protocol: http
-      ip-address: 127.0.0.1
-      tcp-port: 3015
-      uuid: mwdd-1-0-0-tcp-c-es-1-0-0-000
-    elasticsearch-client:
-      uuid: mwdd-1-0-0-es-c-es-1-0-0-000
-      index-alias:
-    
-  - http-client:
-      application-name: MongoDB
-      release-number: 1.0.0
-      uuid: mwdd-1-0-0-http-c-mdb-1-0-0-000
-    tcp-client:
-      remote-protocol: http
-      ip-address: 127.0.0.1
-      tcp-port: 27017
-      uuid: mwdd-1-0-0-tcp-c-mdb-1-0-0-000
-    elasticsearch-client:
-      uuid: mwdd-1-0-0-es-c-mdb-1-0-0-000
-      database-name:
-      collection-name:
-
-  - http-client:
-      application-name: KafkaMessageBus
-      release-number: 1.0.0
-      uuid: mwdd-1-0-0-http-c-kmb-1-0-0-000
-    tcp-client:
-      remote-protocol: http
-      ip-address: 127.0.0.1
-      tcp-port: 9092
-      uuid: mwdd-1-0-0-tcp-c-kmb-1-0-0-000
-    kafka-client:
-      uuid: mwdd-1-0-0-kmb-c-kmb-1-0-0-000
-      topic-name:
-
-  - http-client:
       application-name: OldRelease
-      release-number:
+      release-number: 1.0.0
       uuid: mwdd-1-0-0-http-c-or-1-0-0-000
     tcp-client:
       remote-protocol: http
       ip-address: 127.0.0.1
-      tcp-port:
+      tcp-port: 4030
       uuid: mwdd-1-0-0-tcp-c-or-1-0-0-000
     operation-clients:
       own-oam:
@@ -140,12 +106,12 @@ clients:
 
   - http-client:
       application-name: NewRelease
-      release-number:
+      release-number: 1.0.0
       uuid: mwdd-1-0-0-http-c-nr-1-0-0-000
     tcp-client:
       remote-protocol: http
       ip-address: 127.0.0.1
-      tcp-port:
+      tcp-port: 4030
       uuid: mwdd-1-0-0-tcp-c-nr-1-0-0-000
     operation-clients:
       own-oam:
@@ -300,3 +266,46 @@ clients:
       service:
         basic:
         individual:
+
+  - http-client:
+      application-name: MicroWaveDeviceInventory
+      release-number: 2.0.1
+      uuid: mwdd-1-0-0-http-c-mwdi-2-0-1-000
+    tcp-client:
+      remote-protocol: http
+      ip-address: 127.0.0.1
+      tcp-port: 4024
+      uuid: mwdd-1-0-0-tcp-c-mwdi-2-0-1-000
+    operation-clients:
+      own-oam:
+        basic:
+        individual:
+      service:
+        basic:
+        individual:
+          - operation-name: /core-model-1-4:network-control-domain=cache/control-construct={mountName}
+            uuid: mwdd-1-0-0-op-c-is-mwdi-2-0-1-100
+          - operation-name: /core-model-1-4:network-control-domain=cache/control-construct={mountName}/equipment={uuid}/actual-equipment
+            uuid: mwdd-1-0-0-op-c-is-mwdi-2-0-1-114
+          - operation-name: /core-model-1-4:network-control-domain=cache/control-construct={mountName}/logical-termination-point={uuid}/ltp-augment-1-0:ltp-augment-pac
+            uuid: mwdd-1-0-0-op-c-is-mwdi-2-0-1-201
+
+
+  - http-client:
+      application-name: MicroWaveDomainDictionary
+      release-number: 1.0.0
+      uuid: mwdd-1-0-0-http-c-mwdd-1-0-0-000
+    tcp-client:
+      remote-protocol: http
+      ip-address: 127.0.0.1
+      tcp-port: 4030
+      uuid: mwdd-1-0-0-tcp-c-mwdd-1-0-0-000
+    operation-clients:
+      own-oam:
+        basic:
+        individual:
+      service:
+        basic:
+        individual:
+          - operation-name: /v1/provide-ltp-identifiers-for-link-endpoint
+            uuid: mwdd-1-0-0-op-c-is-mwdd-1-0-0-001
