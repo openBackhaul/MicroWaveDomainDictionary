@@ -1,0 +1,21 @@
+@startuml 301_ReadingEquipmentCategories
+
+skinparam responseMessageBelowArrow true
+
+title
+RequestForProvidingPortEquipmentIdentifiersCausesReadingEquipmentCategories
+end title
+
+participant "Consumer" as Consumer
+participant "MWDD://v1/provide-equipment-interface-identifiers-for-access-port" as mwddPort
+participant "MWDI://core-model-1-4:network-control-domain=cache/control-construct={mountName}\n?fields=equipment(actual-equipment(structure(category)))" as equipmentCategory
+
+activate mwddPort
+
+Consumer -> mwddPort: {mountName, slotId, portId} (apiKeyAuth)
+
+mwddPort -> equipmentCategory: {mountName} (apiKeyAuth)
+
+equipmentCategory --> mwddPort: [{uuid,equipmentCategory}]
+
+@enduml

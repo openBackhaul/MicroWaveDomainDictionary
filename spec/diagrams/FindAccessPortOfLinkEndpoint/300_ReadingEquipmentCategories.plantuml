@@ -1,0 +1,20 @@
+@startuml 300_ReadingEquipmentCategory
+skinparam responseMessageBelowArrow true
+
+title
+RequestForFindingAccessPortOfLinkEndpointCausesReadingEquipmentCategory
+end title
+
+participant "Consumer" as Consumer
+participant "MWDD://v1/find-access-port-of-link-endpoint" as AI2Port
+participant "MWDI://core-model-1-4:network-control-domain=cache/control-construct={mount-name}?fields=equipment(actual-equipment(structure(category)))" as EquipmentCategories
+
+Consumer -> AI2Port: {mountName, linkId} (apiKeyAuth)
+
+activate AI2Port
+
+AI2Port -> EquipmentCategories: {mountName} (apiKeyAuth)
+
+EquipmentCategories --> AI2Port: [{EquipmentUuid, EquipmentCategory}]
+
+@enduml

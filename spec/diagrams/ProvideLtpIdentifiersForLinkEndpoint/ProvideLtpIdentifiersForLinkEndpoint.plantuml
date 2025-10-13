@@ -1,0 +1,17 @@
+@startuml ProvideLtpIdentifiersForLinkEndpoint
+skinparam responseMessageBelowArrow true
+
+title
+ProvideLtpIdentifiersForLinkEndpoint
+end title
+
+participant "Consumer" as Consumer
+participant "MWDD://v1/provide-ltp-identifiers-for-link-endpoint" as linkId_endpoint
+participant "<i>RequestForProvidingLtpIdentifiersOfLinkEndpointCausesFindingTargetAirInterface</i>" as targetAI
+
+Consumer -> linkId_endpoint: {MountName, LinkId} (apiKeyAuth)
+activate linkId_endpoint
+
+targetAI --> linkId_endpoint: {mountName, uuid, localID}
+
+linkId_endpoint -> Consumer: {mountName, uuid, localID}

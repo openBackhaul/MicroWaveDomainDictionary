@@ -1,0 +1,20 @@
+@startuml 200_RequestingLtpIdentifiersOfSideA
+skinparam responseMessageBelowArrow true
+
+title
+RequestForProvidingLtpIdentifiersForLinkIdCausesRequestingLtpIdentifiersOfSideA
+end title
+
+participant "Consumer" as Consumer
+participant "MWDD://v1/provide-ltp-identifiers-for-link-id" as linkId
+participant "MWDD://v1/provide-ltp-identifiers-for-link-endpoint" as linkEndpoint
+
+activate linkId
+
+Consumer -> linkId: {MountNameA, MountNameB, LinkId} (apiKeyAuth)
+
+linkId -> linkEndpoint: {MountNameA, LinkId} (apiKeyAuth)
+linkEndpoint --> linkId: {MountNameA, uuidA, localIdA}
+
+
+@enduml

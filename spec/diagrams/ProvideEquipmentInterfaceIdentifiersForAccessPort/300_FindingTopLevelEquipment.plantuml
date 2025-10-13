@@ -1,0 +1,20 @@
+@startuml 300_FindingTopLevelEquipment
+
+skinparam responseMessageBelowArrow true
+
+title
+RequestForProvidingPortEquipmentIdentifiersCausesFindingTopLevelEquipment
+end title
+
+participant "Consumer" as Consumer
+participant "MWDD://v1/provide-equipment-interface-identifiers-for-access-port" as mwddPort
+participant "MWDI://core-model-1-4:network-control-domain=cache/control-construct={mount-name}?fields=top-level-equipment" as topLevelEquipment
+
+activate mwddPort
+
+Consumer -> mwddPort: {mountName, slotId, portId} (apiKeyAuth)
+
+mwddPort -> topLevelEquipment: {mountName} (apiKeyAuth)
+topLevelEquipment --> mwddPort: {uuid of TopLevelEquipment}
+
+@enduml

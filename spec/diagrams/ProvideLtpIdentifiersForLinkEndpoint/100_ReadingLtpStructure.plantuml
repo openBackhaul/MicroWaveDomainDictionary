@@ -1,0 +1,18 @@
+@startuml 100_ReadingLtpStructure
+skinparam responseMessageBelowArrow true
+
+title
+RequestForProvidingLtpIdentifiersForLinkEndpointCausesReadingLtpStructure
+end title
+
+participant "Consumer" as Consumer
+participant "MWDD://v1/provide-ltp-identifiers-for-link-endpoint" as linkId_endpoint
+participant "MWDI://core-model-1-4:network-control-domain=cache/control-construct={mount-name}?fields=logical-termination-point(uuid;layer-protocol(local-id;layer-protocol-name))" as ReadingLtpStructure
+
+Consumer -> linkId_endpoint: {MountName, LinkId} (apiKeyAuth)
+activate linkId_endpoint
+
+linkId_endpoint -> ReadingLtpStructure: (apiKeyAuth)
+ReadingLtpStructure --> linkId_endpoint: {Uuid, LocalId, LayerProtocolName}
+
+@enduml

@@ -1,0 +1,29 @@
+@startuml 302,303_FindingAssociatedOdu
+skinparam responseMessageBelowArrow true
+
+title
+RequestForFindingAccessPortOfLinkEndpointCausesFindingAssociatedOdu
+end title
+
+participant "Consumer" as Consumer
+participant "MWDD://v1/find-access-port-of-link-endpoint" as Port2AI
+participant "MWDD://v1/provide-ltp-identifiers-for-link-endpoint" as linkEndpoint2Ltp
+participant "MWDI://core-model-1-4:network-control-domain=cache/control-construct={mount-name}\n/logical-termination-point={uuid}/ltp-augment-1-0:ltp-augment-pac?fields=equipment" as EquipmentUuid
+participant "<i>RequestForFindingAccessPortOfLinkEndpointCauses\n<i>ReadingEquipmentCategories</i>" as Categories
+
+Consumer -> Port2AI: {mountName, linkId} (apiKeyAuth)
+
+activate Port2AI
+
+Port2AI -> linkEndpoint2Ltp: {mountName, linkId} (apiKeyAuth)
+linkEndpoint2Ltp --> Port2AI: {mountName, uuid, localId}
+
+Port2AI -> EquipmentUuid: {mountName, uuid}
+EquipmentUuid --> Port2AI: [{EquipmentUuid}]
+
+Port2AI -> Categories: [EquipmentUuid, EquipmentCategory]
+
+
+
+
+@enduml

@@ -1,0 +1,31 @@
+@startuml 301_IdentifyingMountType
+skinparam responseMessageBelowArrow true
+
+title
+RequestForFindingAccessPortOfLinkEndpointCausesIdentifyingMountType
+end title
+
+participant "Consumer" as Consumer
+participant "MWDD://v1/find-access-port-of-link-endpoint" as AI2Port
+participant "MWDI://core-model-1-4:network-control-domain=cache/control-construct={mount-name}?fields=top-level-equipment" as topLevelEquipment
+participant "<i>RequestForFindingAccessPortOfLinkEndpointCauses\n<i>ReadingEquipmentCategories</i>" as Categories
+
+Consumer -> AI2Port: {mountName, linkId} (apiKeyAuth)
+
+activate AI2Port
+
+AI2Port -> topLevelEquipment: {mountName} (apiKeyAuth)
+topLevelEquipment --> AI2Port: {uuid of topLevelEquipment}
+Categories --> AI2Port: [{EquipmentUuid, EquipmentCategory}]
+
+note over AI2Port
+IF EquipmentCategory of TopLevelEquipment == FULL_OUTDOOR
+    THEN **"Full Outdoor"**
+ELSE IF EquipmentCategory of TopLevelEquipment == SUBRACK
+        IF there are Equipments with category == MODEM
+            THEN **"Modular"**
+        ELSE
+            THEN **"Pizza Box"**
+end note
+
+@enduml

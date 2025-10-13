@@ -1,0 +1,32 @@
+@startuml 101_FindingTargetAirInterface
+skinparam responseMessageBelowArrow true
+
+title
+RequestForProvidingLtpIdentifiersForLinkEndpointCausesFindingTargetAirInterface
+end title
+
+participant "Consumer" as Consumer
+participant "MWDD://v1/provide-ltp-identifiers-for-link-endpoint" as linkId_endpoint
+participant "<i>RequestForProvidingLtpIdentifiersOfLinkEndpointCausesReadingLtpStructure</i>" as LTPs
+participant "MWDI://core-model-1-4:network-control-domain=cache/control-construct={mount-name}/logical-termination-point={uuid}/\nltp-augment-1-0:ltp-augment-pac?fields=external-label" as ExternalLabel
+
+Consumer -> linkId_endpoint: {MountName, LinkId} (apiKeyAuth)
+activate linkId_endpoint
+
+LTPs --> linkId_endpoint: [{Uuid, LocalId, LayerProtocolName}]
+
+loop For all UUIDs with LayerProtocolName == AIR_LAYER until (9 first characters of ExternalLabel) == LinkId
+
+linkId_endpoint -> ExternalLabel: (apiKeyAuth)
+ExternalLabel --> linkId_endpoint: {ExternalLabel}
+
+note over linkId_endpoint
+TargetUuid/TargetLocalId = 
+uuid/local-id of LTP with (LayerProtocolName == AIR_LAYER) AND (ExternalLabel.substring(0,9)==LinkId)
+end note
+
+end loop
+
+
+
+@enduml
